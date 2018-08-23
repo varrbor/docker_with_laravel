@@ -1,0 +1,35 @@
+ server {
+    listen ${NGINX_PORT};
+   
+    root /app;
+    index index.php index.html index.htm;
+    
+    access_log off;
+    error_log  off;
+
+    server_name $NGINX_HOST;
+
+    location / {
+      
+        try_files \$uri \$uri/ /index.php?\$args;
+    }
+    
+    
+   location ~* ^.+\.(jpeg|jpg|png|gif|bmp|ico|svg|tif|tiff|css|js|htm|html|ttf|otf|webp|woff|txt|csv|rtf|doc|docx|xls|xlsx|ppt|pptx|odf|odp|ods|odt|pdf|psd|ai|eot|eps|ps|zip|tar|tgz|gz|rar|bz2|7z|aac|m4a|mp3|mp4|ogg|wav|wma|3gp|avi|flv|m4v|mkv|mov|mpeg|mpg|wmv|exe|iso|dmg|swf)$ {
+
+                root /app;
+                
+   }
+
+
+
+    location ~ \.php$ {
+        include snippets/fastcgi-php.conf;
+        fastcgi_pass web-php-fpm:9070;
+    }
+
+    location ~ /\.ht {
+        deny all;
+    }
+}
+

@@ -1,0 +1,58 @@
+version: "3.2"
+networks: 
+    app_net: 
+      driver: bridge
+
+services:  
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
+    networks: 
+      - app_net      
+  mysql:
+    image: mysql:5.7
+    ports:
+      - "3306:3306"     
+    restart: always    
+    environment:
+      MYSQL_ROOT_PASSWORD: eXam287# 
+      MYSQL_DATABASE: appdb 
+      MYSQL_USER: appuser
+      MYSQL_PASSWORD: apppwd 
+    volumes:     
+      - ./containers/mysql/conf:/etc/mysql 
+      - ./data/db:/var/lib/mysql  
+      - ./data/log:/var/log/mysql    
+    networks: 
+      - app_net
+  php-fpm:
+    build:
+      context: ./containers/php
+      dockerfile: Dockerfile  
+    image: zkosta/php-fpm7.2  
+    volumes:
+      - ./containers/php/conf/php.ini:/usr/local/etc/php/php.ini 
+      - ./containers/php/conf/www.conf:/usr/local/etc/pool.d/www.conf 
+      - ./containers/php/conf/php-fpm.conf:/usr/local/etc/php-fpm.conf 
+      - ./app:/app       
+    links:
+       - mysql
+       - redis        
+    networks:
+      - app_net      
+  web:
+    image: nginx   
+    volumes:
+      - ./containers/nginx/conf:/etc/nginx/  
+      - ./data/log:/var/log/nginx/   
+      - ./app:/app
+    ports:
+      - "80:80"
+      - "443:443"
+    links:
+        - php-fpm
+        - mysql
+    networks:
+      - app_net      
+  
