@@ -29,6 +29,9 @@ RUN pecl install redis-4.1.1 \
 	&& pecl install imagick-3.4.3 \
 	&& docker-php-ext-enable redis imagick xdebug	
 	
+
+RUN  apt-get install -y supervisor	
+	
 	
 WORKDIR /opt
 
@@ -40,6 +43,8 @@ RUN ./configure --with-php-config=/usr/local/bin/php-config
 RUN make &&  make install
 	
 ADD ./conf  /usr/local/etc	
+
+WORKDIR /app
 	
 EXPOSE 9070	
 	
