@@ -43,9 +43,9 @@
     ```DB_USER: appuser```
     ```DB_USER_PASSWORD: apppwd``` 
     
-  pay attention that     ```DB_HOST = mysql```  is the name of container which server MySQL , in our case it is ```mysql```
-  
-  5. Configure NGINX 
+    pay attention that     ```DB_HOST = mysql```  is the name of container which server MySQL , in our case it is ```mysql```
+     
+ 5. Configure NGINX 
      Adjust nginx configuration in file ```conntainers\nginx\conf\site-enabled\default.conf```
      
      At least you should change two option:
@@ -53,28 +53,24 @@
      - server_name app.loc;    
      - root /app;
           
-     After editing nginx configuration add to file ```/etc/hosts```  line like  ```127.0.0.1  app.loc```
-  
+     After editing nginx configuration add to file ```/etc/hosts```  line like  ```127.0.0.1  app.loc```  
   
  6. Run environment with 
  
-    ```./vessel start```
-    or 
+    ```./vessel start```    or    ```docker-compose up -d```
     
-    ```docker-compose up -d```
-    
-  On the first start Database will be automatically created. After DB will be accessible  at localhost:3306  
-  
-  7. Running composer and migrations.
-  
-     Very often is required to run ```composer install/update``` command when you work with fresh install of project.
-     The best way is to run it inside docker container. You achieve this with aim of vessel
+    On the first start Database will be automatically created. After DB will be accessible  at localhost:3306.
+      
+ 7. Running composer and migrations.
+   
+    Very often is required to run ```composer install/update``` command when you work with fresh install of project.
+    The best way is to run it inside docker container. You achieve this with aim of vessel
      
-     ```./vessel composer install```
+    ```./vessel composer install```
      
-     or run migrations ( Laravel only)
+    or run migrations ( Laravel only)
      
-     ```./vessel artisan migration```
+    ```./vessel artisan migration```
   
   
   
