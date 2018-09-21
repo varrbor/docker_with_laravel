@@ -71,6 +71,8 @@
     or run migrations ( Laravel only)
      
     ```./vessel artisan migration```
+ 8. install composer inside conteiner
+        docker-compose exec php-fpm php /app/composer.phar install
   
   
   
